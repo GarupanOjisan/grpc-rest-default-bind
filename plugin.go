@@ -95,16 +95,6 @@ import (
 	"github.com/garupanojisan/protoc-gen-restize/runtime"
 )
 
-type Gateway interface {
-	Methods() []Method
-}
-
-type Method interface {
-	SetConn(conn *grpc.ClientConn)
-	Path() string
-	ServeHTTP(w http.ResponseWriter, r *http.Request)
-}
-
 // HelloGateway is RESTFul gateway
 type HelloGateway struct{}
 
