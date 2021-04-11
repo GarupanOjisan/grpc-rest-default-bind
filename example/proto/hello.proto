@@ -2,17 +2,25 @@ syntax = "proto3";
 
 package garupanojissan.grpc.example.hello;
 
-option go_package = "github.com/garupanojisan/grpc-rest-default-bind/example/proto";
+option go_package = "github.com/garupanojisan/protoc-gen-restize/example/proto";
 
 service Hello {
-    rpc SayHello(HelloRequest) returns (HelloResponse) {
+    rpc SayHello(SayHelloRequest) returns (SayHelloResponse) {}
+    rpc SayBye(SayBye.Request) returns (SayBye.Response) {}
+}
+
+message SayHelloRequest {
+    string message = 1;
+}
+
+message SayHelloResponse {
+    string message = 1;
+}
+
+message SayBye {
+    message Request {
+        string message = 1;
     }
-}
-
-message HelloRequest {
-    string message = 1;
-}
-
-message HelloResponse {
-    string message = 1;
+    message Response {
+    }
 }
