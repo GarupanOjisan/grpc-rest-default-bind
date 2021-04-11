@@ -96,7 +96,7 @@ import (
 )
 
 // HelloGateway is RESTFul gateway
-type HelloGateway struct{}
+type {{ $service }}Gateway struct{}
 
 func (g *{{ $service }}Gateway) Methods() []runtime.Method {
 	return []runtime.Method{
