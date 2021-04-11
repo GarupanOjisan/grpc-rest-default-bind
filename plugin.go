@@ -75,6 +75,7 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 			})
 		}
 	}
+
 	return &resp
 }
 
@@ -90,6 +91,8 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"google.golang.org/grpc"
+
+	"github.com/garupanojisan/protoc-gen-restize/runtime"
 )
 
 type Gateway interface {

@@ -7,27 +7,20 @@ import (
 
 	"github.com/golang/protobuf/jsonpb"
 	"google.golang.org/grpc"
+
+	"github.com/garupanojisan/protoc-gen-restize/runtime"
 )
-
-type Gateway interface {
-	Methods() []Method
-}
-
-type Method interface {
-	SetConn(conn *grpc.ClientConn)
-	Path() string
-	ServeHTTP(w http.ResponseWriter, r *http.Request)
-}
 
 // HelloGateway is RESTFul gateway
 type HelloGateway struct{}
 
-func (g *HelloGateway) Methods() []Method {
-	return []Method{ 
-		&MethodHelloSayHello{}, 
+func (g *HelloGateway) Methods() []runtime.Method {
+	return []runtime.Method{
+		&MethodHelloSayHello{},
 		&MethodHelloSayBye{},
 	}
 }
+
 // MethodHelloSayHello is a service of Hello
 type MethodHelloSayHello struct {
 	conn *grpc.ClientConn
@@ -71,6 +64,7 @@ func (m *MethodHelloSayHello) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 }
+
 // MethodHelloSayBye is a service of Hello
 type MethodHelloSayBye struct {
 	conn *grpc.ClientConn
