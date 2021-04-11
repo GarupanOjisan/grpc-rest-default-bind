@@ -24,7 +24,9 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 
 	fileToServices := make(map[string][]*descriptorpb.ServiceDescriptorProto)
 	fileToPackage := make(map[string]string)
+	fileToGoPkg := make(map[string]string)
 	for _, file := range req.ProtoFile {
+		fileToGoPkg[file.GetName()] = file.GetOptions().GetGoPackage()
 		fileToServices[file.GetName()] = file.GetService()
 		fileToPackage[file.GetName()] = file.GetPackage()
 	}
@@ -32,12 +34,12 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 	var resp pluginpb.CodeGeneratorResponse
 	for _, fname := range req.FileToGenerate {
 		pkgName := fileToPackage[fname]
+		goPkg := fileToGoPkg[fname]
+		goPkgName := strings.Split(goPkg, "/")
+
 		for _, svc := range fileToServices[fname] {
 			ms := make([]map[string]string, len(svc.GetMethod()))
 			for i, m := range svc.GetMethod() {
-				//in := strings.Split(m.GetInputType(), ".")
-				//out := strings.Split(m.GetOutputType(), ".")
-
 				in := m.GetInputType()
 				inMsg := strings.TrimPrefix(in, "."+pkgName+".")
 				out := m.GetOutputType()
@@ -57,9 +59,10 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 			gwOut := fname + ".default-gw.go"
 			out := bytes.Buffer{}
 			err := gwTmpl.Execute(&out, map[string]interface{}{
-				"Service": svc.GetName(),
-				"Methods": ms,
-				"Package": pkgName,
+				"Service":   svc.GetName(),
+				"Methods":   ms,
+				"Package":   pkgName,
+				"GoPackage": goPkgName[len(goPkgName)-1],
 			})
 			if err != nil {
 				msg := err.Error()
@@ -76,10 +79,10 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 }
 
 var gatewayTemplate = `// auto generated file
-package proto
+package {{ .GoPackage }}
 
-{{ $service := .Service }}
-{{ $package := .Package }}
+{{- $service := .Service }}
+{{- $package := .Package }}
 
 import (
 	"context"

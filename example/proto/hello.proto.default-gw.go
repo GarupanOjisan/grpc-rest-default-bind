@@ -1,9 +1,6 @@
 // auto generated file
 package proto
 
-
-
-
 import (
 	"context"
 	"net/http"
