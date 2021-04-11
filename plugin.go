@@ -98,8 +98,8 @@ import (
 // HelloGateway is RESTFul gateway
 type HelloGateway struct{}
 
-func (g *{{ $service }}Gateway) Methods() []Method {
-	return []Method{
+func (g *{{ $service }}Gateway) Methods() []runtime.Method {
+	return []runtime.Method{
 	{{- range $i, $method := .Methods }} 
 		&Method{{ $service }}{{ $method.Name }}{},
 	{{- end }}
