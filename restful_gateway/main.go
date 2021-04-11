@@ -7,7 +7,9 @@ import (
 
 	"google.golang.org/grpc"
 
+	"github.com/garupanojisan/protoc-gen-restize/example/hoge"
 	"github.com/garupanojisan/protoc-gen-restize/example/proto"
+	"github.com/garupanojisan/protoc-gen-restize/runtime"
 )
 
 func main() {
@@ -20,8 +22,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	gs := []proto.Gateway{
+	gs := []runtime.Gateway{
 		&proto.HelloGateway{},
+		&hoge.ExampleGateway{},
 	}
 	for _, g := range gs {
 		for _, m := range g.Methods() {

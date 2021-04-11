@@ -15,12 +15,11 @@ import (
 type HelloGateway struct{}
 
 func (g *HelloGateway) Methods() []runtime.Method {
-	return []runtime.Method{
-		&MethodHelloSayHello{},
+	return []runtime.Method{ 
+		&MethodHelloSayHello{}, 
 		&MethodHelloSayBye{},
 	}
 }
-
 // MethodHelloSayHello is a service of Hello
 type MethodHelloSayHello struct {
 	conn *grpc.ClientConn
@@ -64,7 +63,6 @@ func (m *MethodHelloSayHello) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 }
-
 // MethodHelloSayBye is a service of Hello
 type MethodHelloSayBye struct {
 	conn *grpc.ClientConn

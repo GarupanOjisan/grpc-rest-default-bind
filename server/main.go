@@ -18,8 +18,8 @@ func main() {
 
 	server := grpc.NewServer()
 
-	hello := &HelloServer{}
-	proto.RegisterHelloServer(server, hello)
+	proto.RegisterHelloServer(server, &HelloServer{})
+	proto.RegisterExampleServer(server, &ExampleServer{})
 
 	fmt.Printf("start listening on :8080\n")
 	if err := server.Serve(lis); err != nil {
@@ -36,4 +36,19 @@ func (s *HelloServer) SayBye(ctx context.Context, request *proto.SayBye_Request)
 
 func (s *HelloServer) SayHello(ctx context.Context, req *proto.SayHelloRequest) (*proto.SayHelloResponse, error) {
 	return &proto.SayHelloResponse{Message: req.GetMessage()}, nil
+}
+
+type ExampleServer struct {
+}
+
+func (s *ExampleServer) Get(ctx context.Context, req *proto.Get_Request) (*proto.Get_Response, error) {
+	return &proto.Get_Response{
+		Data: []byte("test"),
+	}, nil
+}
+
+func (s *ExampleServer) Post(ctx context.Context, req *proto.Post_Request) (*proto.Post_Response, error) {
+	return &proto.Post_Response{
+		Ok: true,
+	}, nil
 }

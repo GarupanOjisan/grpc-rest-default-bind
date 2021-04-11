@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -56,7 +57,7 @@ func (d *DefaultRestfulBind) Run(req *pluginpb.CodeGeneratorRequest) *pluginpb.C
 			}
 
 			// gateway
-			gwOut := fname + ".default-gw.go"
+			gwOut := filepath.Join(goPkg, filepath.Base(fname)+".default-gw.go")
 			out := bytes.Buffer{}
 			err := gwTmpl.Execute(&out, map[string]interface{}{
 				"Service":   svc.GetName(),

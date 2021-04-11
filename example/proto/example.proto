@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package garupanojissan.grpc.example.example;
+
+option go_package = "github.com/garupanojisan/protoc-gen-restize/example/hoge";
+
+service Example {
+    rpc Get(Get.Request) returns (Get.Response) {}
+    rpc Post(Post.Request) returns (Post.Response) {}
+}
+
+message Get {
+    message Request {
+        string key = 1;
+    }
+    message Response {
+        bytes data = 1;
+    }
+}
+
+message Post {
+    message Request {
+        string key = 1;
+        bytes data = 2;
+    }
+    message Response {
+        bool ok = 1;
+    }
+}
